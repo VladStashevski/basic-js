@@ -14,17 +14,20 @@ const { NotImplementedError } = require('../extensions/index.js');
  * ]) => 3`
  *
  */
-function countCats(/* matrix */) {
-let coun = 0;
-matrix.forEach(el => {
-  for (let i = 0; i < el.lengt; i++){
-    if (el[i] === "^^")
-    {coun++
-  }
+
+
+
+ function countCats(matrix) {
+let find = 0;
+  matrix.forEach(el => {
+  for (let i = 0; i < el.length; i++){
+ if (el[i] === "^^"){
+  find++
+   }  } })
+  return find;
 }
-})
-return coun;
-}
+
+
 
 module.exports = {
   countCats
