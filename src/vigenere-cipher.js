@@ -28,18 +28,35 @@ const { NotImplementedError } = require("../extensions/index.js");
 //  Di = (Ei - Ki + 26) mod 26
 
 class VigenereCipheringMachine {
+
   #alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   #isDirect;
-
   constructor(isDirect = true) {
     this.#isDirect = isDirect;
   }
+  encrypt(str, key) {
+    if (!str || !key) throw new Error("Incorrect arguments!");
+    str = str.toUpperCase();
+    key = "".padStart(str.length, key).toUpperCase();
+    const result = Array.from({ length: str.length }, (_, i) => {
+      const strIdx = this.#alphabet.indexOf(str[i]);
 
-  #transform(str, key, encrypt) {
+      if (strIdx === -1) {
+        key = key.substring(0, i) + str[i] + key.substring(i);
+      }
+
+      const keyIdx = this.#alphabet.indexOf(key[i]);
+      return strIdx > -1 ? this.#alphabet[(strIdx + keyIdx) % 26] : str[i];
+    });
+
+    return this.#isDirect ? result.join("") : result.reverse().join("");
+  }
+
+  decrypt(str, key) {
     if (!str || !key) throw new Error("Incorrect arguments!");
 
     str = str.toUpperCase();
-    key = key.toUpperCase();
+    key = "".padStart(str.length, key).toUpperCase();
 
     const result = Array.from({ length: str.length }, (_, i) => {
       const strIdx = this.#alphabet.indexOf(str[i]);
@@ -49,20 +66,11 @@ class VigenereCipheringMachine {
       }
 
       const keyIdx = this.#alphabet.indexOf(key[i]);
-      const newIndex = encrypt ? (strIdx + keyIdx) % 26 : (strIdx - keyIdx + 26) % 26;
 
-      return strIdx > -1 ? this.#alphabet[newIndex] : str[i];
+      return strIdx > -1 ? this.#alphabet[(strIdx - keyIdx + 26) % 26] : str[i];
     });
 
     return this.#isDirect ? result.join("") : result.reverse().join("");
-  }
-
-  encrypt(str, key) {
-    return this.#transform(str, key, true);
-  }
-
-  decrypt(str, key) {
-    return this.#transform(str, key, false);
   }
 }
 

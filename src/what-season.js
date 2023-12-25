@@ -12,23 +12,23 @@ const { NotImplementedError } = require("../extensions/index.js");
  *
  */
 function getSeason(date) {
-  if (!date || Object.prototype.toString.call(date) !== "[object Date]" || isNaN(date)) {
-    throw new Error("Invalid date!");
+  if (date) {
+    const seasons = [
+      "winter","winter", "spring", "spring", "spring", "summer","summer", "summer", "autumn", "autumn", "autumn", "winter",
+    ];
+
+    try {
+      
+      return seasons[date.getUTCMonth()];
+    } catch (error) {
+      
+      throw new Error("Invalid date!");
+    }
   }
 
-  const month = date.getUTCMonth();
-  if (month >= 0 && month <= 1 || month === 11) {
-    return "winter";
-  } else if (month >= 2 && month <= 4) {
-    return "spring";
-  } else if (month >= 5 && month <= 7) {
-    return "summer";
-  } else {
-    return "autumn";
-  }
+  return "Unable to determine the time of year!";
 }
 
 module.exports = {
   getSeason,
 };
-

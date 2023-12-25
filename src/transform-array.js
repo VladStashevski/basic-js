@@ -25,33 +25,37 @@ function transform(arr) {
 
     switch (el) {
       case "--double-next":
-        if (i + 1 < arr.length) {
+        if (arr[i + 1] !== undefined) {
           result.push(arr[i + 1]);
         }
         break;
       case "--discard-next":
-        if (i + 1 < arr.length) {
-          i++;
-        }
+        i++;
         break;
       case "--double-prev":
-        if (i - 1 >= 0) {
-          result.push(arr[i - 1]);
+        if (arr[i - 1] !== undefined && arr[i - 2] !== "--discard-next") {
+          result.push(result.at(-1));
         }
+
         break;
       case "--discard-prev":
-        if (i - 1 >= 0) {
+        if (arr[i - 1] !== undefined && arr[i - 2] !== "--discard-next") {
           result.pop();
         }
+        
         break;
       default:
-        result.push(el);
+        if (el !== null) {
+          result.push(el);
+        }
         break;
     }
   }
+
   return result;
 }
 
 module.exports = {
   transform,
 };
+
