@@ -1,4 +1,4 @@
-const { NotImplementedError } = require('../extensions/index.js');
+const { NotImplementedError } = require("../extensions/index.js");
 
 /**
  * Given a string, return its encoding version.
@@ -10,31 +10,10 @@ const { NotImplementedError } = require('../extensions/index.js');
  * For aabbbc should return 2a3bc
  *
  */
- function encodeLine(str) {
-  let total = '';
-  
-for (let i = 0; i < str.length; i++) {
-  let counter = 1;
-    
-    let type = str[i];
-
-    while (type === str[i+1]){
-      counter ++
-      i++
-  }
-
-  if(counter === 1) {
-      
-     total = total.concat(`${type}`)
-    } else {
-     
-      total = total.concat(`${counter}${type}`)
-   }
-}
-  
-  return total
+function encodeLine(str) {
+  return str.replace(/(.)\1*/g, (match, ch) => (match.length > 1 ? match.length + ch : ch));
 }
 
 module.exports = {
-  encodeLine
+  encodeLine,
 };
